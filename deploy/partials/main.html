@@ -1,0 +1,72 @@
+
+<br>
+<div class="mainContainer" style="height: 10vh">
+	<nav>
+    <!--Post Comment button-->
+		<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#commentForm">Post a Comment</button>
+
+    <!-- Filter bar -->
+    <!-- REFERENCE: http://getbootstrap.com/components/ -->
+    <div class="input-group">
+      <input type="text" class="form-control" placeholder="Filter..." ng-model="search">
+      <span class="input-group-btn">
+        <button class="btn glyphicon glyphicon-search" type="button" ng-click="filter(search);"/></button>
+      </span>
+    </div>
+	</nav>
+  
+  <!-- Comments are preended to this div -->
+  <h5><div id='commentsDiv'></div>
+
+  <!-- Logout button -->
+  <button type="button" class="btn btn-warning" ng-click="logout($event)">Log Out</button></h5>
+</div>
+
+<!-- Main modal for posting comments -->
+<!-- Reference: http://www.w3schools.com/bootstrap/bootstrap_modal.asp -->
+  <div id="commentForm" class="modal fade" role="dialog">
+  	<div class="modal-dialog">
+
+      <!-- Modal header-->
+      <div class="modal-content">
+      	<div class="modal-header">
+        	<button type="button" class="close" data-dismiss="modal">&times;</button>
+         	<h4 class="modal-title">Post your comment below</h4>
+        </div>
+        
+        <!--Modal text area-->
+        <div class="modal-body">
+         	<textarea class="form-control" rows="5" id="comment" ng-model="user.comment"></textarea>
+        </div>
+        
+        <!--Post comment button-->
+      	<div class="modal-footer">
+         	<button type="submit" ng-click="PostComment($event)" data-dismiss="modal" class="btn btn-warning" style="width: 100%">Post Comment</button>
+        </div>
+      </div>
+      </div>
+  </div>
+
+  <!--Sub comment modal-->
+  <div id="subCommentForm" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+      <!-- Modal header-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Post your comment below</h4>
+        </div>
+        
+        <!--modal text area-->
+        <div class="modal-body">
+          <textarea class="form-control" rows="5" id="comment" ng-model="user.subComment"></textarea>
+        </div>
+        
+        <!--Post sub comment button. Calls the PostSubComment method in index.html-->
+        <div class="modal-footer">
+          <button type="submit" name="subCommentName" id="subCommentId" ng-click="PostSubComment($event.srcElement.id)" data-dismiss="modal" class="btn btn-warning" style="width: 100%">Post Comment</button>
+        </div>
+      </div>
+      </div>
+  </div>

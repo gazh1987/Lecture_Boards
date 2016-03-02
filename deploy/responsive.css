@@ -1,0 +1,43 @@
+@media screen and (max-width: 767px) 
+{
+	.btn
+	{
+		width: 100%;
+		color: #ffffff;
+		outline:0;
+	}
+	
+	.container
+	{
+		width: 100%;
+		color: #000000;
+	}
+	
+	.mainContainer
+	{
+		width: 100%;
+	}
+	
+	.btn-vote
+	{
+		width: 40%;
+		height: 35px;
+		float: right;
+		border-radius: 8px;
+		background-color: #ec971f;
+		color: white;
+		outline: 0;
+	}
+}
+
+@media screen and (min-width: 767px)
+{
+	/* 	This break is used when the website is beig used on a mobile
+		device. It pushed the toggle button below the heading of the section
+		so as to make the site look neater on smaller devices. 
+	*/
+    .break 
+	{ 
+		display: none; 
+	}
+}

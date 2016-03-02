@@ -1,0 +1,32 @@
+<body ng-controller="LoginController">
+	<div class="container">
+		<h4 class="text-center"><strong> Login with your Email and Password</strong></h4>
+		<p ng-bind="failedLogin"></p>
+		<p ng-bind="successfulRegistration"></p>
+
+
+		<form role="form">
+			<div class="form-group">
+				<input type="email" class="form-control" id="email" ng-model="user.email" placeholder="Email"></input>
+			</div>
+
+			<div class="form-group">
+				<input type="password" class="form-control" id="password" ng-model="user.password" placeholder="Password"></input>
+			</div>		
+
+			<button type="submit" ng-click="SignIn($event)" class="btn btn-primary" style="width: 100%">Submit</button>
+		</form>
+		<br>
+		<br>
+
+		<h4 class="text-center"><strong> Log in with your Google or Github account </strong></h3>
+		
+		<nav id ="socialLogin">
+			<div class="center-row">
+				<img ng-Click="GoogleLogin($event)" ng-src="Images/googleIcon.png" height="60" width="60" alt="GoogleIcon" />
+
+				<img ng-Click="GithubLogin($event)" ng-src="Images/githubIcon.png" height="60" width="60" alt="githubIcon" />
+			</div>
+		</nav>
+	</div>
+</body>

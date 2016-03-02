@@ -1,0 +1,20 @@
+<body ng-controller="RegisterController">
+	<div class="container">
+		<h4 class="text-center"><strong>Register with your email and password</strong></h4>
+
+		<form role="form">
+			<div class="form-group">
+				<input type="email" class="form-control" id="email" ng-model="reg.email" placeholder="Email"></input>
+			</div>
+
+			<div class="form-group">
+				<input type="password" class="form-control" id="password" ng-model="reg.password" placeholder="Password"></input>
+			</div>		
+
+			<button type="submit" ng-click="Register($event)" class="btn btn-primary" style="width: 100%">Register</button>
+		</form>
+
+		<p ng-bind="failedRegister"></p>
+
+	</div>
+</body>

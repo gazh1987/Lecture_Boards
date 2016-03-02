@@ -1,0 +1,148 @@
+<!--
+	Author: Gary Healy
+	URL: https://flickering-inferno-5359.firebaseapp.com
+-->
+
+<!doctype html>
+<html lang="en" ng-app="interactionBoard">
+<head lang="en">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta charset="utf-8">
+	<title> Index </title>
+</head>
+
+<body>
+	<!--Site Header-->
+	<div class = "jumbotron text-center">
+		<h1><strong> Lecture Board </strong></h1>
+		<p>Interact with your lecturer in real time </p>
+	</div>
+
+	<!--All partials rendered here-->
+	<div ng-view></div>
+
+	<!--External libraries-->
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.1/angular.min.js"></script>
+  	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  	<script src="https://cdn.firebase.com/js/client/2.3.1/firebase.js"></script>
+	<script src="https://cdn.firebase.com/libs/angularfire/0.8.0/angularfire.min.js"></script>
+	<script src="https://cdn.firebase.com/js/simple-login/1.6.2/firebase-simple-login.js"></script>
+	<link rel="stylesheet" ng-href="style.css"> 
+	<link rel="stylesheet" ng-href="responsive.css"> 
+	
+	<!--Needed for Modal -->
+  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+  	<!--Scripts-->
+  	<script src="app.js"></script>
+  	
+  	<script>
+  		/**
+			Name: 			upvote
+			Description: 	Creates a new firebase reference and update the vote count
+							at that data location
+		**/
+	  	function upVote(votes, key)
+	  	{
+	  		votes++;
+	  		var ref = 'https://flickering-inferno-5359.firebaseio.com/';
+	  		ref += key;
+	  		var firebaseRef = new Firebase(ref);
+	  		firebaseRef.update({ votes: votes });
+		};
+
+
+		//The JQUERY function below  is called when a user clicks the button to post a sub comment. It passes the comment_id of the comment being commented on to the subcomment modals id attribute. This allow the app to add a subcomment to the correct reference in firebase. 
+
+		//REFERENCE: http://stackoverflow.com/questions/10626885/passing-data-to-a-bootstrap-modal 
+		$(document).ready(function(){
+			$(document).on("click", ".subCommentButton", function () 
+			{
+	     		var subCommentId = $(this).data('id');
+	     		$('[name="subCommentName"]').attr("id", subCommentId);
+			});
+		});
+
+		/**
+			Name: 			showSubComments
+			Description: 	This function is called to display every comments 							subcomment. Works similarly to the displayComment function 					in app.js. 
+		**/
+		function showSubComments(key, currentUserEmail)
+		{
+			var ref = 'https://flickering-inferno-5359.firebaseio.com/';
+	  		ref += key;
+	  		ref += "/subComments";
+	  		var firebaseRef = new Firebase(ref);
+	  		
+	  		//REFERENCE: https://www.firebase.com/docs/web/api/datasnapshot/foreach.html
+	  		firebaseRef.once("value", function(snapshot) 
+	  		{
+			 	snapshot.forEach(function(childSnapshot) 
+			 	{
+			 		var parentKey = firebaseRef.parent().key();
+				    var key = childSnapshot.key();
+				    var childData = childSnapshot.val();
+				    var emailButton = "";
+
+				    if (childData.user_email == currentUserEmail)
+					{
+						var emailButton = '<br><button type="submit" class="btn btn-vote" onClick="deleteSubComment(\''+parentKey+'\' , \'' + key + '\');">delete Comment</buttton>';
+					}
+
+				    $('<div/>')
+	  				.append('<h4 style="word-wrap: break-word;">' + childData.comment + '</h4>'
+	  					+ '<p class="textAlignRight">'
+	  					+ '<br><strong>User: </strong>' + childData.user_email 
+		  				+ '<br><strong>Time Of Post: </strong>' + trimDateTime(childData.dateTime)
+	  					+ emailButton)
+	  				.appendTo($('#' + parentKey))
+	  				.wrap('<div class="subCommentsWrapper" id="' + key + '" style="clear: both"></div>');
+				});
+			});
+		};
+
+		/**
+			Name: 			deleteComment
+			Description: 	This function is called when the user clicks the delete comment button. Creates a reference to 
+							the comments data location in firebase and removes it from firebase. Also removes the comment from the DOM 
+							using JQUERY.
+		**/
+		function deleteComment(key)
+		{
+			var ref = 'https://flickering-inferno-5359.firebaseio.com/';
+	  		ref += key;
+	  		var deleteRef = new Firebase(ref);
+	  		deleteRef.remove();
+			$('#' + key).remove();
+
+		}
+
+		/**
+			Name: 			deleteSubComment
+			Description: 	Similar to deleteComment function above. Needs a prent key aswell as its onwn key. The p_key references
+							the parent comment.
+		**/
+		function deleteSubComment(p_key, sc_key)
+		{
+			var ref = 'https://flickering-inferno-5359.firebaseio.com/';
+	  		ref += p_key;
+	  		ref+='/';
+	  		ref += "/subComments/";
+	  		ref+=sc_key;
+	  		var deleteSubRef = new Firebase(ref);
+	  		deleteSubRef.remove();
+	  		$('#' + sc_key).remove();
+		}
+
+		function trimDateTime(dateTime)
+		{
+			var dateTime = dateTime.toString();
+			var n = dateTime.indexOf("GMT+");
+			var s = dateTime.substring(0, n);
+			return s;
+		};
+	</script>
+
+</body>
+</html>
