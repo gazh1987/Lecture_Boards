@@ -4,7 +4,7 @@ Lecture boards is an application that allows users to interact with their lectur
 Lecture boards is written using angularJS, bootstrap and Firebase for data storage.
 
 Please visit the app at this URL:
+
 https://flickering-inferno-5359.firebaseapp.com/#/index
 
-Thanks
-Gary
+
